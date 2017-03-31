@@ -1,3 +1,7 @@
+# Config files
+driver_emails.py
+feed_url.py
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
