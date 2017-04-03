@@ -144,6 +144,7 @@ def send_email(task, person):
     server.starttls()
     server.login(username, password)
     server.sendmail(from_adr, to_adr, msg.as_string())
+    print("Sending E-mails to {} for job {}.".format(', '.join(to_adr), task['link'][-8:]))
     server.quit()
 
 
