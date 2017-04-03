@@ -129,10 +129,11 @@ def send_email(task, person):
     msg['Subject'] = "You have a new task."
     msg['From'] = from_adr
     msg['To'] = to_adr
+    to_adr = [to_adr]
     # Steve also wants a copy.
     if (person[1] != steve_email) and (person[0] != 'Drivers'):
         msg['CC'] = steve_email
-        to_adr = [to_adr, steve_email]
+        to_adr.append(steve_email)
     text = create_text(task, person)
     html = create_html(task, person)
     part1 = MIMEText(text, 'plain')
