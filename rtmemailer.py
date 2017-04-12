@@ -131,9 +131,9 @@ def send_email(task, person):
     msg['To'] = to_adr
     to_adr = [to_adr]
     # Steve also wants a copy.
-    if (person[1] != steve_email) and (person[0] != 'Drivers'):
-        msg['CC'] = steve_email
-        to_adr.append(steve_email)
+    #if (person[1] != steve_email) and (person[0] != 'Drivers'):
+    #    msg['CC'] = steve_email
+    #    to_adr.append(steve_email)
     text = create_text(task, person)
     html = create_html(task, person)
     part1 = MIMEText(text, 'plain')
@@ -164,9 +164,14 @@ def check():
     live_feed = parse(live_feed)
     diff = diff_check(live_feed, local_feed)
     for task in diff:
+        emailed = False
         for tag in task['tags']:
             if tag in emails.keys():
                 send_email(task, emails[tag])
+                emailed = True
+        # Forward tasks to appropriate people.
+        if emailed:
+            send_email(task, forward_email)
     # If there are differences, download the new feed.
     if len(diff) > 0:
         urllib.request.urlretrieve(feed_url, 'feed.xml')
