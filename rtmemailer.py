@@ -34,7 +34,11 @@ def parse(feed):
             task['tags'] = match.group(1).split(', ')
         match = re.search('due_value">([^<]*)', item['content'][0]['value'])
         if match:
-            task['due_date'] = dateutil.parser.parse(match.group(1))
+            d = match.group(1)
+            try:
+                task['due_date'] = dateutil.parser.parse(d)
+            except ValueError:
+                task['due_date'] = d
         match = re.search('priority_value">([^<]*)', item['content'][0]['value'])
         if match:
             p = match.group(1)
@@ -66,10 +70,14 @@ def create_text(task, person):
     name = person[0]
     title = task['title'].upper()
     # Only include time if it is not midnight.
-    due_date = datetime.strftime(task['due_date'], '%a %b %e, %Y').replace('  ', ' ')
-    if task['due_date'].hour != 0:
-        due_date += ' @ '
-        due_date += datetime.strftime(task['due_date'], '%I:%M %p').lstrip('0')
+    try:
+        due_date = datetime.strftime(task['due_date'], '%a %b %e, %Y').replace('  ', ' ')
+    except ValueError:
+        due_date = task['due_date']
+    else:
+        if task['due_date'].hour != 0:
+            due_date += ' @ '
+            due_date += datetime.strftime(task['due_date'], '%I:%M %p').lstrip('0')
     priority = task['priority']
     tags = ', '.join(task['tags'])
     link = task['link']
@@ -93,10 +101,14 @@ def create_html(task, person):
     """
     name = person[0]
     title = task['title']
-    due_date = datetime.strftime(task['due_date'], '%a %b %e, %Y').replace('  ', ' ')
-    if task['due_date'].hour != 0:
-        due_date += ' @ '
-        due_date += datetime.strftime(task['due_date'], '%I:%M %p').lstrip('0')
+    try:
+        due_date = datetime.strftime(task['due_date'], '%a %b %e, %Y').replace('  ', ' ')
+    except ValueError:
+        due_date = task['due_date']
+    else:
+        if task['due_date'].hour != 0:
+            due_date += ' @ '
+            due_date += datetime.strftime(task['due_date'], '%I:%M %p').lstrip('0')
     priority = task['priority']
     tags = ', '.join(task['tags'])
     link = task['link']
