@@ -37,7 +37,7 @@ def parse(feed):
             d = match.group(1)
             try:
                 task['due_date'] = dateutil.parser.parse(d)
-            except ValueError:
+            except:
                 task['due_date'] = d
         match = re.search('priority_value">([^<]*)', item['content'][0]['value'])
         if match:
@@ -72,7 +72,7 @@ def create_text(task, person):
     # Only include time if it is not midnight.
     try:
         due_date = datetime.strftime(task['due_date'], '%a %b %e, %Y').replace('  ', ' ')
-    except ValueError:
+    except:
         due_date = task['due_date']
     else:
         if task['due_date'].hour != 0:
@@ -103,7 +103,7 @@ def create_html(task, person):
     title = task['title']
     try:
         due_date = datetime.strftime(task['due_date'], '%a %b %e, %Y').replace('  ', ' ')
-    except ValueError:
+    except:
         due_date = task['due_date']
     else:
         if task['due_date'].hour != 0:
