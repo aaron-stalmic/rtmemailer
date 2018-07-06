@@ -152,7 +152,7 @@ def send_email(task, person):
     part2 = MIMEText(html, 'html')
     msg.attach(part1)
     msg.attach(part2)
-    server = smtplib.SMTP('secure.emailsrvr.com', 587)
+    server = smtplib.SMTP('outlook.office365.com', 587)
     server.ehlo()
     server.starttls()
     server.login(username, password)
